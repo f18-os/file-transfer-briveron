@@ -45,6 +45,25 @@ for res in socket.getaddrinfo(serverHost, serverPort, socket.AF_UNSPEC, socket.S
     try:
         print(" attempting to connect to %s" % repr(sa))
         s.connect(sa)
+
+    #--------------
+        with open('Test.txt', 'wb') as f:
+            print ('file opened')
+            while True:
+                #print('receiving data...')
+                data = s.recv(1024)
+                print('data=%s', (data))
+                if not data:
+                    f.close()
+                    print ('file close')
+                    break
+                # write data to a file
+                f.write(data)
+
+        print('Successfully get the file')
+        s.close()
+        print('connection closed')
+    #--------------
     except socket.error as msg:
         print(" error: %s" % msg)
         s.close()
@@ -64,4 +83,3 @@ print("received:", framedReceive(s, debug))
 print("sending hello world")
 framedSend(s, b"hello world", debug)
 print("received:", framedReceive(s, debug))
-
